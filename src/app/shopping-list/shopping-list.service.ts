@@ -27,4 +27,9 @@ export class ShoppingListService implements OnInit {
     this.ingredientsChanged.emit(this.getIngredients());
     console.log(this.ingredients);
   }
+
+  addIngredients(ingredients: Ingredient[]) {
+    this.ingredients.push(...ingredients); // ES6 Spread Operator
+    this.ingredientsChanged.emit(this.getIngredients());
+  }
 }
