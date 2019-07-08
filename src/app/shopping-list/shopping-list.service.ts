@@ -1,11 +1,12 @@
-import { Injectable, EventEmitter, OnInit } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingListService implements OnInit {
-  ingredientsChanged = new EventEmitter<Ingredient[]>();
+  ingredientsChanged = new Subject<Ingredient[]>();
 
   private ingredients: Ingredient[] = [
     new Ingredient('Apples', 5),
@@ -15,7 +16,7 @@ export class ShoppingListService implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.ingredientsChanged.emit(this.getIngredients());
+    this.ingredientsChanged.next(this.getIngredients());
   }
 
   getIngredients() {
@@ -24,12 +25,12 @@ export class ShoppingListService implements OnInit {
 
   onIngredientAdded(ingredient: Ingredient) {
     this.ingredients.push(ingredient);
-    this.ingredientsChanged.emit(this.getIngredients());
+    this.ingredientsChanged.next(this.getIngredients());
     console.log(this.ingredients);
   }
 
   addIngredients(ingredients: Ingredient[]) {
     this.ingredients.push(...ingredients); // ES6 Spread Operator
-    this.ingredientsChanged.emit(this.getIngredients());
+    this.ingredientsChanged.next(this.getIngredients());
   }
 }
