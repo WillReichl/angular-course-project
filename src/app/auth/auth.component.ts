@@ -34,9 +34,8 @@ export class AuthComponent {
           console.log(authResponseData);
           this.isLoading = false;
         },
-        error => {
-          console.log(error);
-          this.error = 'An error occurred!';
+        errorMessage => {
+          this.error = errorMessage;
           this.isLoading = false;
         }
       );
