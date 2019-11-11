@@ -11,6 +11,7 @@ export interface AuthResponseData {
   refreshToken: string;
   expiresIn: string;
   localId: string;
+  registered?: boolean;
 }
 
 @Injectable({
@@ -18,6 +19,7 @@ export interface AuthResponseData {
 })
 export class AuthService {
   constructor(private http: HttpClient) {}
+
   signUp(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
@@ -42,5 +44,17 @@ export class AuthService {
           return throwError(errorMessage);
         })
       );
+  }
+
+  login(email: string, password: string) {
+    return this.http.post<AuthResponseData>(
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
+        environment.firebaseApiKey,
+      {
+        email: email,
+        password: password,
+        returnSecureToken: true
+      }
+    );
   }
 }
