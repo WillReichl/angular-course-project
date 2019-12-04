@@ -1,8 +1,15 @@
+<!-- ng-template does not add anything to the real DOM (like an empty div), but we can still get access to it programmatically later -->
+<ng-template appPlaceholder></ng-template>
 <div class="row">
   <div class="col-xs-12 col-md-6 col-md-offset-3">
-    <div class="alert alert-danger" *ngIf="error">
+    <!-- <app-alert
+      [message]="error"
+      *ngIf="error"
+      (close)="onHandleError()"
+    ></app-alert> -->
+    <!-- <div class="alert alert-danger" *ngIf="error">
       <p>{{ error }}</p>
-    </div>
+    </div> -->
     <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
       <div *ngIf="isLoading" style="text-align:center;">
         <app-loading-spinner></app-loading-spinner>
@@ -37,11 +44,11 @@
           type="submit"
           [disabled]="!authForm.valid"
         >
-          {{ isLoginMode ? "Login" : "Sign Up" }}
+          {{ isLoginMode ? 'Login' : 'Sign Up' }}
         </button>
         |
         <button class="btn btn-primary" type="button" (click)="onSwitchMode()">
-          Switch To {{ isLoginMode ? "Sign Up" : "Login" }}
+          Switch To {{ isLoginMode ? 'Sign Up' : 'Login' }}
         </button>
       </div>
     </form>
