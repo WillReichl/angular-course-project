@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
-import { Ingredient } from '../shared/ingredient.model';
+import { Ingredient } from '../../shared/ingredient.model';
+import { ADD_INGREDIENT } from './shopping-list.actions';
 
 const initialState = {
   ingredients: [
@@ -12,7 +13,7 @@ const initialState = {
 // if state is null, initialState is the default
 export function shoppingListReducer(state = initialState, action: Action) {
   switch (action.type) {
-    case 'ADD_INGREDIENT':
+    case ADD_INGREDIENT:
       // return copy of old state + new data -- STATE SHOULD ALWAYS BE IMMUTABLE
       return {
         ...state,
