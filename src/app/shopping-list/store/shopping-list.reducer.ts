@@ -22,6 +22,29 @@ export function shoppingListReducer(
         ...state,
         ingredients: [...state.ingredients, ...action.payload]
       };
+    case ShoppingListActions.UPDATE_INGREDIENT:
+      const ingredient = state.ingredients[action.payload.index]; // get ingredient from state
+      const updatedIngredient = {
+        ...ingredient,
+        ...action.payload.ingredient
+      }; // copy ingredient, and overwrite with updated properties
+      const updatedIngredients = [...state.ingredients];
+      updatedIngredients[action.payload.index] = updatedIngredient;
+
+      console.log(state.ingredients);
+      console.log(updatedIngredients);
+
+      return {
+        ...state,
+        ingredients: updatedIngredients
+      };
+    case ShoppingListActions.DELETE_INGREDIENT:
+      return {
+        ...state,
+        ingredients: state.ingredients.filter((ig, igIndex) => {
+          return igIndex !== action.payload;
+        })
+      };
     default:
       return state;
   }
