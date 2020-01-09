@@ -15,10 +15,8 @@ import * as ShoppingListActions from './store/shopping-list.actions';
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
   ingredients: Observable<{ ingredients: Ingredient[] }>;
-  private subscription: Subscription;
 
   constructor(
-    private slService: ShoppingListService,
     private store: Store<fromShoppingList.AppState>
   ) {}
 
