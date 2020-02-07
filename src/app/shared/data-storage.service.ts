@@ -5,6 +5,9 @@ import { RecipeService } from '../recipes/recipe.service';
 import { map, tap, take, exhaustMap } from 'rxjs/operators';
 import { Ingredient } from './ingredient.model';
 import { AuthService } from '../auth/auth.service';
+import { Store } from '@ngrx/store';
+
+import * as fromApp from '../store/app.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,8 @@ export class DataStorageService {
   constructor(
     private http: HttpClient,
     private recipeService: RecipeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<fromApp.AppState>
   ) {}
 
   storeRecipes() {
@@ -29,29 +33,22 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    return this.authService.user.pipe(
-      // way to take current value of user w/o ongoing subcription, no need for manual unsubscribe
-      take(1),
-      // exhaustMap allows you to put an observable w/in the callback of another
-      exhaustMap(user => {
-        return this.http.get<Recipe[]>(
-          'https://ng-course-recipe-book-7d136.firebaseio.com/recipes.json',
-          {
-            params: new HttpParams().set('auth', user.token)
-          }
-        );
-      }),
-      map(recipes => {
-        return recipes.map(recipe => {
-          return {
-            ...recipe,
-            ingredients: recipe.ingredients ? recipe.ingredients : []
-          };
-        });
-      }),
-      tap(recipes => {
-        this.recipeService.setRecipes(recipes);
-      })
-    );
+    return this.http
+      .get<Recipe[]>(
+        'https://ng-course-recipe-book-7d136.firebaseio.com/recipes.json'
+      )
+      .pipe(
+        map(recipes => {
+          return recipes.map(recipe => {
+            return {
+              ...recipe,
+              ingredients: recipe.ingredients ? recipe.ingredients : []
+            };
+          });
+        }),
+        tap(recipes => {
+          this.recipeService.setRecipes(recipes);
+        })
+      );
   }
 }

@@ -24,7 +24,7 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  user = new BehaviorSubject<User>(null);
+  // user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
   constructor(
@@ -141,12 +141,14 @@ export class AuthService {
     // calculate expiration date as milliseconds past "beginning of time" + (expiration seconds * 1000)
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
-    this.store.dispatch(new AuthActions.Login({
-      email: email,
-      userId: userId,
-      token: token,
-      expirationDate: expirationDate
-    });
+    this.store.dispatch(
+      new AuthActions.Login({
+        email: email,
+        userId: userId,
+        token: token,
+        expirationDate: expirationDate
+      })
+    );
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
   }
